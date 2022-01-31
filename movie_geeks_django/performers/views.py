@@ -3,7 +3,7 @@ from .models import Performer
 from .serializers import BasicPerformerSerializer
 
 
-class FilmView(ModelViewSet):
+class PerformerView(ModelViewSet):
     serializer_class = BasicPerformerSerializer
     queryset = Performer.objects.all()
 

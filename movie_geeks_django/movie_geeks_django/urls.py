@@ -17,13 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from movies.views import FilmView
-from awards.views import AwardView
+from awards.views import FilmAwardView, FilmAwardReceivedView
 from performers.views import PerformerView
 
 router = routers.DefaultRouter()
 router.register('films', FilmView, basename='film-view')
 router.register('performers', PerformerView, basename='performer-view')
-router.register('awards', AwardView, basename='awards-view')
+router.register('film-awards', FilmAwardView, basename='film-award-view')
+router.register('film-awards-received', FilmAwardReceivedView, basename='film-award-received-view')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

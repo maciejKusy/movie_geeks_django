@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import FilmAward, FilmAwardReceived
 
-# Register your models here.
+admin.site.register(FilmAward)
+admin.site.register(FilmAwardReceived)
