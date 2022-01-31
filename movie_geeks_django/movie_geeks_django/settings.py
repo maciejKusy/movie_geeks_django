@@ -36,6 +36,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'awards.apps.AwardsConfig',
+    'performers.apps.PerformersConfig',
     'movies.apps.MoviesConfig',
     'rest_framework',
     'django.contrib.admin',

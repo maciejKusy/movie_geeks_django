@@ -4,6 +4,5 @@ from .serializers import BasicFilmSerializer
 
 
 class FilmView(ModelViewSet):
-
     serializer_class = BasicFilmSerializer
     queryset = Film.objects.all()
