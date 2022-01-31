@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from rest_framework.viewsets import ModelViewSet
+from .models import Award
+from .serializers import BasicAwardSerializer
 
-# Create your views here.
+
+class AwardView(ModelViewSet):
+    serializer_class = BasicAwardSerializer
+    queryset = Award.objects.all()

@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from rest_framework.viewsets import ModelViewSet
+from .models import Performer
+from .serializers import BasicPerformerSerializer
 
-# Create your views here.
+
+class FilmView(ModelViewSet):
+    serializer_class = BasicPerformerSerializer
+    queryset = Performer.objects.all()
+
