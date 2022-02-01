@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
 from .models import FilmAward, FilmAwardReceived
-from .serializers import BasicFilmAwardSerializer, BasicReceivedFilmAwardSerializer
+from .serializers import BasicFilmAwardSerializer, ExtendedReceivedFilmAwardSerializer
 
 
 class FilmAwardView(ModelViewSet):
@@ -9,5 +9,5 @@ class FilmAwardView(ModelViewSet):
 
 
 class FilmAwardReceivedView(ModelViewSet):
-    serializer_class = BasicReceivedFilmAwardSerializer
+    serializer_class = ExtendedReceivedFilmAwardSerializer
     queryset = FilmAwardReceived.objects.all()

@@ -1,8 +1,8 @@
 from rest_framework.viewsets import ModelViewSet
 from .models import Film
-from .serializers import BasicFilmSerializer
+from .serializers import ExtendedFilmSerializer
 
 
 class FilmView(ModelViewSet):
-    serializer_class = BasicFilmSerializer
+    serializer_class = ExtendedFilmSerializer
     queryset = Film.objects.all()
