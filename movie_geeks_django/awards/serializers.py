@@ -4,6 +4,9 @@ from movies.nested_serializers import FilmSerializerForDisplayInFilmographies
 from performers.nested_serializers import PerformerSerializerForDisplayInCast
 
 
+# --------------------------------------------##GENERAL AWARDS BELOW##--------------------------------------------#
+
+
 class BasicFilmAwardSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -11,8 +14,18 @@ class BasicFilmAwardSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class BasicReceivedFilmAwardSerializer(serializers.ModelSerializer):
+class ExtendedFilmAwardSerializer(serializers.ModelSerializer):
+    recipients = serializers.ListField(source='get_all_recipients')
 
+    class Meta:
+        model = FilmAward
+        fields = ['id', 'name', 'date_established', 'description', 'recipients']
+
+
+# --------------------------------------------##RECEIVED AWARDS BELOW##--------------------------------------------#
+
+
+class BasicReceivedFilmAwardSerializer(serializers.ModelSerializer):
     class Meta:
         model = FilmAwardReceived
         fields = '__all__'
@@ -25,4 +38,3 @@ class ExtendedReceivedFilmAwardSerializer(serializers.ModelSerializer):
     class Meta:
         model = FilmAwardReceived
         fields = ['id', 'type', 'awarded_on', 'awarded_for', 'recipient']
-
