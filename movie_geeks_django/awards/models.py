@@ -17,17 +17,23 @@ class FilmAward(models.Model):
     name = models.CharField(choices=AWARD_TYPES, max_length=50, blank=False, null=True)
     date_established = models.DateField(blank=True)
     description = models.TextField(max_length=200, blank=True)
+    url_name = models.CharField(max_length=51, null=True, blank=True)
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.url_name = self.name.replace(" ", "_").lower()
+        super(FilmAward, self).save(*args, **kwargs)
 
     @property
     def get_all_recipients(self):
         all_awards_of_same_type = FilmAwardReceived.objects.all().filter(type=self.name).values()
         recipients = list()
         for award in all_awards_of_same_type.iterator():
-            recipient_name = Performer.objects.all().filter(pk=award['recipient_id']).values('full_name')[0]['full_name']
-            recipients.append({'id': award['recipient_id'], 'full_name': recipient_name})
+            recipient_id = award['recipient_id']
+            recipient_name = Performer.objects.all().filter(pk=recipient_id).values('full_name')[0]['full_name']
+            recipients.append({'id': recipient_id, 'full_name': recipient_name})
 
         return recipients
 

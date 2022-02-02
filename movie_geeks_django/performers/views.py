@@ -6,4 +6,5 @@ from .serializers import ExtendedPerformerSerializer
 class PerformerView(ModelViewSet):
     serializer_class = ExtendedPerformerSerializer
     queryset = Performer.objects.all()
+    lookup_field = 'url_name'
 

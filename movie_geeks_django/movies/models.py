@@ -9,6 +9,7 @@ class Film(models.Model):
     synopsis = models.TextField(max_length=200, blank=False)
     director = models.ForeignKey('performers.Performer', on_delete=models.PROTECT, blank=True, null=True)
     cast = models.ManyToManyField('performers.Performer', related_name='films', blank=True)
+    url_name = models.CharField(max_length=51, null=True, blank=True)
 
     def __str__(self):
         return f'{self.name} ({self.year_of_release})'
@@ -16,5 +17,9 @@ class Film(models.Model):
     def clean(self):
         if self.year_of_release < 1888 or self.year_of_release > datetime.now().year:
             raise forms.ValidationError('Invalid year provided!')
+
+    def save(self, *args, **kwargs):
+        self.url_name = f'{self.name.replace(" ", "_").lower()}_{self.year_of_release}'
+        super(Film, self).save(*args, **kwargs)
 
 

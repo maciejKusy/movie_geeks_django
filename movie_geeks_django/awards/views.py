@@ -6,6 +6,7 @@ from .serializers import ExtendedFilmAwardSerializer, ExtendedReceivedFilmAwardS
 class FilmAwardView(ModelViewSet):
     serializer_class = ExtendedFilmAwardSerializer
     queryset = FilmAward.objects.all()
+    lookup_field = 'url_name'
 
 
 class FilmAwardReceivedView(ModelViewSet):
