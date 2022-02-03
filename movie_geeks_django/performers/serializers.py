@@ -12,9 +12,10 @@ class BasicPerformerSerializer(serializers.ModelSerializer):
 
 
 class ExtendedPerformerSerializer(serializers.ModelSerializer):
-    films = FilmSerializerForDisplayInFilmographies(many=True, read_only=True)
+    starred_in = FilmSerializerForDisplayInFilmographies(many=True, read_only=True)
+    directed = FilmSerializerForDisplayInFilmographies(many=True, read_only=True)
     awards = ReceivedReceivedAwardSerializerForDisplayInAwardLists(many=True, read_only=True)
 
     class Meta:
         model = Performer
-        fields = ['id', 'full_name', 'birthdate', 'biography', 'films', 'awards']
+        fields = ['id', 'full_name', 'birthdate', 'biography', 'starred_in', 'directed', 'awards', 'url_name']

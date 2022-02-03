@@ -1,4 +1,9 @@
 from django.contrib import admin
 from .models import Performer
 
-admin.site.register(Performer)
+
+class PerformerAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'url_name': ['full_name']}
+
+
+admin.site.register(Performer, PerformerAdmin)

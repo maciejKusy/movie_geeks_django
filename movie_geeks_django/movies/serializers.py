@@ -16,4 +16,4 @@ class ExtendedFilmSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Film
-        fields = ['id', 'name', 'year_of_release', 'synopsis', 'director', 'cast']
+        fields = ['id', 'name', 'year_of_release', 'synopsis', 'director', 'cast', 'url_name']
