@@ -12,3 +12,4 @@ class FilmAwardView(ModelViewSet):
 class FilmAwardReceivedView(ModelViewSet):
     serializer_class = ExtendedReceivedFilmAwardSerializer
     queryset = FilmAwardReceived.objects.all()
+    lookup_field = 'url_name'

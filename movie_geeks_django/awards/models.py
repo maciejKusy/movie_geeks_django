@@ -14,8 +14,7 @@ class FilmAwardReceived(models.Model):
         return f'{self.name} received by {self.recipient} for {self.awarded_for}.'
 
     def save(self, *args, **kwargs):
-        if not self.url_name:
-            self.url_name = slugify(f'{self.name} {self.awarded_on} {self.recipient}')
+        self.url_name = slugify(f'{str(self.name)} {self.awarded_on} {str(self.recipient)}')
         super().save(*args, **kwargs)
 
 

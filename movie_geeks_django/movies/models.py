@@ -24,6 +24,5 @@ class Film(models.Model):
 
     def save(self, *args, **kwargs):
         self.full_clean()
-        if not self.url_name:
-            self.url_name = slugify(f'{self.name} {self.year_of_release}')
+        self.url_name = slugify(f'{self.name} {self.year_of_release}')
         super().save(*args, **kwargs)
