@@ -11,12 +11,18 @@ class Film(models.Model):
             MinValueValidator(1888)
         ]
     )
+    genre = models.ForeignKey('movies.Genre',
+                              related_name='films',
+                              on_delete=models.PROTECT,
+                              blank=True, null=True)
     synopsis = models.TextField(max_length=200, blank=False)
     director = models.ForeignKey('performers.Performer',
                                  related_name='directed',
                                  on_delete=models.PROTECT,
                                  blank=True, null=True)
-    cast = models.ManyToManyField('performers.Performer', related_name='starred_in', blank=True)
+    cast = models.ManyToManyField('performers.Performer',
+                                  related_name='starred_in',
+                                  blank=True)
     url_name = models.SlugField(unique=True, max_length=51, null=True, blank=True)
 
     def __str__(self):
@@ -26,3 +32,17 @@ class Film(models.Model):
         self.full_clean()
         self.url_name = slugify(f'{self.name} {self.year_of_release}')
         super().save(*args, **kwargs)
+
+
+class Genre(models.Model):
+    name = models.CharField(max_length=30, blank=False)
+    description = models.TextField(max_length=400, blank=True)
+    url_name = models.SlugField(unique=True, max_length=40, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        self.url_name = slugify(self.name)
+        super().save(*args, **kwargs)
+
