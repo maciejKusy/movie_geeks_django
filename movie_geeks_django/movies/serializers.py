@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Film, Genre
+from .models import Film, Genre, FilmReview
 from performers.nested_serializers import PerformerSerializerForDisplayInCast
 from .nested_serializers import FilmSerializerForDisplayInFilmographies, \
     GenreSerializerForDisplayInFilmInfo, FilmReviewSerializerForDisplayInLists
@@ -29,4 +29,13 @@ class ExtendedGenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
         fields = ['id', 'name', 'description', 'films', 'url_name']
+
+
+class ExtendedFilmReviewSerializer(serializers.ModelSerializer):
+    author = serializers.CharField(source='author.user.username')
+    film_reviewed = FilmSerializerForDisplayInFilmographies(many=False, read_only=True)
+
+    class Meta:
+        model = FilmReview
+        fields = ['id', 'author', 'rating', 'title', 'written_on', 'content', 'film_reviewed']
 

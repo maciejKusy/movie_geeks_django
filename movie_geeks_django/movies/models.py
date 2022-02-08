@@ -67,3 +67,11 @@ class FilmReview(models.Model):
                                       related_name='reviews',
                                       on_delete=models.CASCADE,
                                       blank=False)
+    url_field = models.SlugField(unique=True, max_length=120, null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.title}, {str(self.film_reviewed)} review by {str(self.author)}'
+
+    def save(self, *args, **kwargs):
+        self.url_name = slugify(f'{self.title} {str(self.author)}')
+        super().save(*args, **kwargs)

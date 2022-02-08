@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from movies.views import FilmView, GenreView
+from movies.views import FilmView, GenreView, FilmReviewView, FilmReviewForUserView
 from awards.views import FilmAwardView, FilmAwardReceivedView
 from performers.views import PerformerView
 
@@ -26,8 +26,11 @@ router.register('performers', PerformerView, basename='performer-view')
 router.register('film-awards', FilmAwardView, basename='film-award-view')
 router.register('film-awards-received', FilmAwardReceivedView, basename='film-award-received-view')
 router.register('genres', GenreView, basename='genre-view')
+router.register('film-reviews', FilmReviewView, basename='film-reviews')
+router.register('my-film-reviews', FilmReviewForUserView, basename='my-film-reviews')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('login/', include('rest_framework.urls')),
     path('', include(router.urls))
 ]
