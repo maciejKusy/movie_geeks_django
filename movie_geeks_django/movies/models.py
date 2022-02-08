@@ -45,4 +45,3 @@ class Genre(models.Model):
     def save(self, *args, **kwargs):
         self.url_name = slugify(self.name)
         super().save(*args, **kwargs)
-

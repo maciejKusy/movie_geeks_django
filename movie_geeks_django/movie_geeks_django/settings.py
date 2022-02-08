@@ -36,6 +36,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'users.apps.UsersConfig',
     'awards.apps.AwardsConfig',
     'performers.apps.PerformersConfig',
     'movies.apps.MoviesConfig',
