@@ -1,16 +1,18 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from datetime import datetime
+
+from django.utils import timezone
 from django.utils.text import slugify
 
 
 class Film(models.Model):
     name = models.CharField(max_length=50, blank=False)
     year_of_release = models.IntegerField(default=1, validators=[
-            MaxValueValidator(datetime.now().year + 2),
-            MinValueValidator(1888)
-        ]
-    )
+        MaxValueValidator(datetime.now().year + 2),
+        MinValueValidator(1888)
+    ]
+                                          )
     genre = models.ForeignKey('movies.Genre',
                               related_name='films',
                               on_delete=models.PROTECT,
@@ -45,3 +47,23 @@ class Genre(models.Model):
     def save(self, *args, **kwargs):
         self.url_name = slugify(self.name)
         super().save(*args, **kwargs)
+
+
+class FilmReview(models.Model):
+    author = models.ForeignKey('users.UserProfile',
+                               related_name='reviews',
+                               on_delete=models.PROTECT,
+                               blank=False)
+    rating = models.IntegerField(default=1,
+                                 validators=[
+                                     MaxValueValidator(10),
+                                     MinValueValidator(1)
+                                 ]
+                                 )
+    title = models.CharField(max_length=50, blank=False)
+    written_on = models.DateTimeField(default=timezone.now)
+    content = models.TextField(max_length=500, blank=True)
+    film_reviewed = models.ForeignKey(Film,
+                                      related_name='reviews',
+                                      on_delete=models.CASCADE,
+                                      blank=False)
