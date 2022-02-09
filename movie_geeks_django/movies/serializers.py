@@ -56,7 +56,7 @@ class BasicFilmReviewSerializer(serializers.ModelSerializer):
 
 
 class ExtendedFilmReviewSerializer(serializers.ModelSerializer):
-    author = serializers.CharField(source="author.user.username")
+    author = serializers.CharField(source="author.user.username", allow_blank=True)
     film_reviewed = FilmSerializerForDisplayInFilmographies(many=False, read_only=True)
 
     class Meta:

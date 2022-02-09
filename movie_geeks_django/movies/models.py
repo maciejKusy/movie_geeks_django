@@ -62,7 +62,8 @@ class FilmReview(models.Model):
         "users.UserProfile",
         related_name="reviews",
         on_delete=models.PROTECT,
-        blank=False,
+        null=True,
+        blank=True
     )
     rating = models.IntegerField(
         default=1, validators=[MaxValueValidator(10), MinValueValidator(1)]
@@ -71,7 +72,7 @@ class FilmReview(models.Model):
     written_on = models.DateTimeField(default=timezone.now)
     content = models.TextField(max_length=500, blank=True)
     film_reviewed = models.ForeignKey(
-        Film, related_name="reviews", on_delete=models.CASCADE, blank=False
+        Film, related_name="reviews", on_delete=models.CASCADE, null=False, blank=False
     )
     url_field = models.SlugField(unique=True, max_length=120, null=True, blank=True)
 

@@ -158,6 +158,9 @@ class FilmReviewForUserView(ModelViewSet):
         else:
             return super().get_serializer_class()
 
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user.userprofile)
+
     def create(self, request, *args, **kwargs):
         """
         Ensures that the response to a POST request is parsed using the elaborate (nested serialization included)
@@ -165,7 +168,7 @@ class FilmReviewForUserView(ModelViewSet):
         :param request: HTTP request sent by user
         :return: HTTP response from server
         """
-        serializer = ExtendedFilmReviewSerializer(data=request.data)
+        serializer = BasicFilmReviewSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
@@ -185,7 +188,7 @@ class FilmReviewForUserView(ModelViewSet):
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        return_serializer = ExtendedFilmReviewSerializer(
+        return_serializer = BasicFilmReviewSerializer(
             instance, data=request.data, partial=partial
         )
         return_serializer.is_valid(raise_exception=True)
