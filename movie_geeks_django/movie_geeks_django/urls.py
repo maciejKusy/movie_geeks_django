@@ -26,7 +26,7 @@ router.register('performers', PerformerView, basename='performer-view')
 router.register('film-awards', FilmAwardView, basename='film-award-view')
 router.register('film-awards-received', FilmAwardReceivedView, basename='film-award-received-view')
 router.register('genres', GenreView, basename='genre-view')
-router.register('film-reviews', FilmReviewView, basename='film-reviews')
+router.register('film-reviews', FilmReviewView, basename='film-reviews')    # this is here just for dev purposes
 router.register('my-film-reviews', FilmReviewForUserView, basename='my-film-reviews')
 
 urlpatterns = [

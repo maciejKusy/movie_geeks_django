@@ -23,12 +23,26 @@ class ExtendedFilmSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'year_of_release', 'genre', 'synopsis', 'director', 'cast', 'reviews', 'url_name']
 
 
+class BasicGenreSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Genre
+        fields = '__all__'
+
+
 class ExtendedGenreSerializer(serializers.ModelSerializer):
     films = FilmSerializerForDisplayInFilmographies(many=True, read_only=True)
 
     class Meta:
         model = Genre
         fields = ['id', 'name', 'description', 'films', 'url_name']
+
+
+class BasicFilmReviewSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = FilmReview
+        fields = '__all__'
 
 
 class ExtendedFilmReviewSerializer(serializers.ModelSerializer):
