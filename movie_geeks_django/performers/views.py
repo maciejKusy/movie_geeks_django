@@ -1,6 +1,7 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+
 from .models import Performer
 from .serializers import BasicPerformerSerializer, ExtendedPerformerSerializer
 
@@ -8,7 +9,7 @@ from .serializers import BasicPerformerSerializer, ExtendedPerformerSerializer
 class PerformerView(ModelViewSet):
     serializer_class = ExtendedPerformerSerializer
     queryset = Performer.objects.all()
-    lookup_field = 'url_name'
+    lookup_field = "url_name"
 
     def get_serializer_class(self):
         """
@@ -32,7 +33,9 @@ class PerformerView(ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
 
     def update(self, request, *args, **kwargs):
         """
@@ -41,18 +44,19 @@ class PerformerView(ModelViewSet):
         :param request: HTTP request sent by user
         :return: HTTP response from server
         """
-        partial = kwargs.pop('partial', False)
+        partial = kwargs.pop("partial", False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        return_serializer = ExtendedPerformerSerializer(instance, data=request.data, partial=partial)
+        return_serializer = ExtendedPerformerSerializer(
+            instance, data=request.data, partial=partial
+        )
         return_serializer.is_valid(raise_exception=True)
 
-        if getattr(instance, '_prefetched_objects_cache', None):
+        if getattr(instance, "_prefetched_objects_cache", None):
             # If 'prefetch_related' has been applied to a queryset, we need to
             # forcibly invalidate the prefetch cache on the instance.
             instance._prefetched_objects_cache = {}
 
         return Response(return_serializer.data)
-

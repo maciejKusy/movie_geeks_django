@@ -1,15 +1,17 @@
 from rest_framework import serializers
-from .models import Film, Genre, FilmReview
+
 from performers.nested_serializers import PerformerSerializerForDisplayInCast
-from .nested_serializers import FilmSerializerForDisplayInFilmographies, \
-    GenreSerializerForDisplayInFilmInfo, FilmReviewSerializerForDisplayInLists
+
+from .models import Film, FilmReview, Genre
+from .nested_serializers import (FilmReviewSerializerForDisplayInLists,
+                                 FilmSerializerForDisplayInFilmographies,
+                                 GenreSerializerForDisplayInFilmInfo)
 
 
 class BasicFilmSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Film
-        fields = '__all__'
+        fields = "__all__"
 
 
 class ExtendedFilmSerializer(serializers.ModelSerializer):
@@ -20,14 +22,23 @@ class ExtendedFilmSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Film
-        fields = ['id', 'name', 'year_of_release', 'genre', 'synopsis', 'director', 'cast', 'reviews', 'url_name']
+        fields = [
+            "id",
+            "name",
+            "year_of_release",
+            "genre",
+            "synopsis",
+            "director",
+            "cast",
+            "reviews",
+            "url_name",
+        ]
 
 
 class BasicGenreSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Genre
-        fields = '__all__'
+        fields = "__all__"
 
 
 class ExtendedGenreSerializer(serializers.ModelSerializer):
@@ -35,21 +46,27 @@ class ExtendedGenreSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Genre
-        fields = ['id', 'name', 'description', 'films', 'url_name']
+        fields = ["id", "name", "description", "films", "url_name"]
 
 
 class BasicFilmReviewSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = FilmReview
-        fields = '__all__'
+        fields = "__all__"
 
 
 class ExtendedFilmReviewSerializer(serializers.ModelSerializer):
-    author = serializers.CharField(source='author.user.username')
+    author = serializers.CharField(source="author.user.username")
     film_reviewed = FilmSerializerForDisplayInFilmographies(many=False, read_only=True)
 
     class Meta:
         model = FilmReview
-        fields = ['id', 'author', 'rating', 'title', 'written_on', 'content', 'film_reviewed']
-
+        fields = [
+            "id",
+            "author",
+            "rating",
+            "title",
+            "written_on",
+            "content",
+            "film_reviewed",
+        ]

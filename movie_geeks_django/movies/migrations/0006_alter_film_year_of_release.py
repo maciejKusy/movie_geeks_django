@@ -7,13 +7,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('movies', '0005_alter_film_url_name'),
+        ("movies", "0005_alter_film_url_name"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='film',
-            name='year_of_release',
-            field=models.IntegerField(default=1, validators=[django.core.validators.MaxValueValidator(2024), django.core.validators.MinValueValidator(1888)]),
+            model_name="film",
+            name="year_of_release",
+            field=models.IntegerField(
+                default=1,
+                validators=[
+                    django.core.validators.MaxValueValidator(2024),
+                    django.core.validators.MinValueValidator(1888),
+                ],
+            ),
         ),
     ]

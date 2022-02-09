@@ -6,18 +6,36 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('awards', '0002_filmawardreceived_type'),
+        ("awards", "0002_filmawardreceived_type"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='filmaward',
-            name='name',
-            field=models.CharField(choices=[('oscar', 'oscar'), ('golden globe', 'golden globe'), ('golden palm', 'golden palm'), ('golden raspberry', 'golden raspberry')], max_length=50, null=True),
+            model_name="filmaward",
+            name="name",
+            field=models.CharField(
+                choices=[
+                    ("oscar", "oscar"),
+                    ("golden globe", "golden globe"),
+                    ("golden palm", "golden palm"),
+                    ("golden raspberry", "golden raspberry"),
+                ],
+                max_length=50,
+                null=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='filmawardreceived',
-            name='type',
-            field=models.CharField(choices=[('oscar', 'oscar'), ('golden globe', 'golden globe'), ('golden palm', 'golden palm'), ('golden raspberry', 'golden raspberry')], max_length=50, null=True),
+            model_name="filmawardreceived",
+            name="type",
+            field=models.CharField(
+                choices=[
+                    ("oscar", "oscar"),
+                    ("golden globe", "golden globe"),
+                    ("golden palm", "golden palm"),
+                    ("golden raspberry", "golden raspberry"),
+                ],
+                max_length=50,
+                null=True,
+            ),
         ),
     ]

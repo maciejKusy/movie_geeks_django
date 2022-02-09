@@ -14,5 +14,3 @@ class Performer(models.Model):
     def save(self, *args, **kwargs):
         self.url_name = slugify(self.full_name)
         super().save(*args, **kwargs)
-
-

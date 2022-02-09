@@ -1,15 +1,18 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+
 from .models import FilmAward, FilmAwardReceived
-from .serializers import BasicFilmAwardSerializer, ExtendedFilmAwardSerializer, BasicReceivedFilmAwardSerializer, \
-    ExtendedReceivedFilmAwardSerializer
+from .serializers import (BasicFilmAwardSerializer,
+                          BasicReceivedFilmAwardSerializer,
+                          ExtendedFilmAwardSerializer,
+                          ExtendedReceivedFilmAwardSerializer)
 
 
 class FilmAwardView(ModelViewSet):
     serializer_class = ExtendedFilmAwardSerializer
     queryset = FilmAward.objects.all()
-    lookup_field = 'url_name'
+    lookup_field = "url_name"
 
     def get_serializer_class(self):
         """
@@ -33,7 +36,9 @@ class FilmAwardView(ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
 
     def update(self, request, *args, **kwargs):
         """
@@ -42,15 +47,17 @@ class FilmAwardView(ModelViewSet):
         :param request: HTTP request sent by user
         :return: HTTP response from server
         """
-        partial = kwargs.pop('partial', False)
+        partial = kwargs.pop("partial", False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        return_serializer = ExtendedFilmAwardSerializer(instance, data=request.data, partial=partial)
+        return_serializer = ExtendedFilmAwardSerializer(
+            instance, data=request.data, partial=partial
+        )
         return_serializer.is_valid(raise_exception=True)
 
-        if getattr(instance, '_prefetched_objects_cache', None):
+        if getattr(instance, "_prefetched_objects_cache", None):
             # If 'prefetch_related' has been applied to a queryset, we need to
             # forcibly invalidate the prefetch cache on the instance.
             instance._prefetched_objects_cache = {}
@@ -61,7 +68,7 @@ class FilmAwardView(ModelViewSet):
 class FilmAwardReceivedView(ModelViewSet):
     serializer_class = ExtendedReceivedFilmAwardSerializer
     queryset = FilmAwardReceived.objects.all()
-    lookup_field = 'url_name'
+    lookup_field = "url_name"
 
     def get_serializer_class(self):
         """
@@ -85,7 +92,9 @@ class FilmAwardReceivedView(ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
 
     def update(self, request, *args, **kwargs):
         """
@@ -94,15 +103,17 @@ class FilmAwardReceivedView(ModelViewSet):
         :param request: HTTP request sent by user
         :return: HTTP response from server
         """
-        partial = kwargs.pop('partial', False)
+        partial = kwargs.pop("partial", False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        return_serializer = ExtendedReceivedFilmAwardSerializer(instance, data=request.data, partial=partial)
+        return_serializer = ExtendedReceivedFilmAwardSerializer(
+            instance, data=request.data, partial=partial
+        )
         return_serializer.is_valid(raise_exception=True)
 
-        if getattr(instance, '_prefetched_objects_cache', None):
+        if getattr(instance, "_prefetched_objects_cache", None):
             # If 'prefetch_related' has been applied to a queryset, we need to
             # forcibly invalidate the prefetch cache on the instance.
             instance._prefetched_objects_cache = {}
