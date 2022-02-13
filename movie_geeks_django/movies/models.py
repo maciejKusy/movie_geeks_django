@@ -14,13 +14,12 @@ class Film(models.Model):
             MaxValueValidator(datetime.now().year + 2),
             MinValueValidator(1888),
         ],
+        blank=False
     )
-    genre = models.ForeignKey(
+    genre = models.ManyToManyField(
         "movies.Genre",
         related_name="films",
-        on_delete=models.PROTECT,
-        blank=True,
-        null=True,
+        blank=False
     )
     synopsis = models.TextField(max_length=200, blank=False)
     director = models.ForeignKey(
@@ -28,7 +27,7 @@ class Film(models.Model):
         related_name="directed",
         on_delete=models.PROTECT,
         blank=True,
-        null=True,
+        null=True
     )
     cast = models.ManyToManyField(
         "performers.Performer", related_name="starred_in", blank=True
@@ -62,19 +61,19 @@ class FilmReview(models.Model):
         "users.UserProfile",
         related_name="reviews",
         on_delete=models.PROTECT,
-        null=True,
-        blank=True
+        blank=True,
+        null=True
     )
     rating = models.IntegerField(
-        default=1, validators=[MaxValueValidator(10), MinValueValidator(1)]
+        default=1, validators=[MaxValueValidator(10), MinValueValidator(1)], blank=False
     )
     title = models.CharField(max_length=50, blank=False)
     written_on = models.DateTimeField(default=timezone.now)
-    content = models.TextField(max_length=500, blank=True)
+    content = models.TextField(max_length=500, blank=True, null=True)
     film_reviewed = models.ForeignKey(
-        Film, related_name="reviews", on_delete=models.CASCADE, null=False, blank=False
+        Film, related_name="reviews", on_delete=models.CASCADE, blank=False
     )
-    url_field = models.SlugField(unique=True, max_length=120, null=True, blank=True)
+    url_name = models.SlugField(unique=True, max_length=120, null=True, blank=True)
 
     def __str__(self):
         return f"{self.title}, {str(self.film_reviewed)} review by {str(self.author)}"
@@ -82,3 +81,4 @@ class FilmReview(models.Model):
     def save(self, *args, **kwargs):
         self.url_name = slugify(f"{self.title} {str(self.author)}")
         super().save(*args, **kwargs)
+

@@ -6,7 +6,7 @@ from .models import FilmAwardReceived
 class ReceivedReceivedAwardSerializerForDisplayInAwardLists(
     serializers.ModelSerializer
 ):
-    name = serializers.CharField(source="name.name")
+    name = serializers.CharField()
 
     class Meta:
         model = FilmAwardReceived

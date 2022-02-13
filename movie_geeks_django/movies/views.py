@@ -168,7 +168,7 @@ class FilmReviewForUserView(ModelViewSet):
         :param request: HTTP request sent by user
         :return: HTTP response from server
         """
-        serializer = BasicFilmReviewSerializer(data=request.data)
+        serializer = ExtendedFilmReviewSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
@@ -188,7 +188,7 @@ class FilmReviewForUserView(ModelViewSet):
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        return_serializer = BasicFilmReviewSerializer(
+        return_serializer = ExtendedFilmReviewSerializer(
             instance, data=request.data, partial=partial
         )
         return_serializer.is_valid(raise_exception=True)

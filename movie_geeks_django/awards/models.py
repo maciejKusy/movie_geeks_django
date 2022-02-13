@@ -5,23 +5,30 @@ from performers.models import Performer
 
 
 class FilmAwardReceived(models.Model):
+    AWARD_STATUSES = [
+        ('winner', 'winner'),
+        ('nominee', 'nominee'),
+    ]
     name = models.ForeignKey(
-        "awards.FilmAward", on_delete=models.CASCADE, null=True, blank=False
+        "awards.FilmAward", on_delete=models.CASCADE, blank=True, null=True
     )
     awarded_on = models.DateField(blank=False)
+    award_status = models.CharField(max_length=20, choices=AWARD_STATUSES, blank=False, default='winner')
+    category = models.CharField(max_length=50, blank=False, default='category')
     awarded_for = models.ForeignKey(
-        "movies.Film", on_delete=models.PROTECT, blank=False
+        "movies.Film", on_delete=models.PROTECT, blank=True, null=True
     )
     recipient = models.ForeignKey(
         "performers.Performer",
         related_name="awards",
         on_delete=models.CASCADE,
-        blank=False,
+        blank=True,
+        null=True
     )
     url_name = models.SlugField(unique=True, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.name} received by {self.recipient} for {self.awarded_for}."
+        return f"{str(self.name)} received by {str(self.recipient)} for {str(self.awarded_for)}."
 
     def save(self, *args, **kwargs):
         self.url_name = slugify(
@@ -31,7 +38,7 @@ class FilmAwardReceived(models.Model):
 
 
 class FilmAward(models.Model):
-    name = models.CharField(max_length=50, blank=False, null=True)
+    name = models.CharField(max_length=50, blank=False, default='award')
     date_established = models.DateField(blank=True)
     description = models.TextField(max_length=200, blank=True)
     url_name = models.SlugField(unique=True, null=True, blank=True)

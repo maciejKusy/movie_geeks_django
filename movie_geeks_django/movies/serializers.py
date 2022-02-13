@@ -15,8 +15,8 @@ class BasicFilmSerializer(serializers.ModelSerializer):
 
 
 class ExtendedFilmSerializer(serializers.ModelSerializer):
-    genre = GenreSerializerForDisplayInFilmInfo(many=False, read_only=True)
-    director = PerformerSerializerForDisplayInCast(many=False, read_only=True)
+    genre = GenreSerializerForDisplayInFilmInfo(many=False, read_only=True, required=False)
+    director = PerformerSerializerForDisplayInCast(many=False, read_only=True, required=False)
     cast = PerformerSerializerForDisplayInCast(many=True, read_only=True)
     reviews = FilmReviewSerializerForDisplayInLists(many=True, read_only=True)
 
@@ -56,8 +56,8 @@ class BasicFilmReviewSerializer(serializers.ModelSerializer):
 
 
 class ExtendedFilmReviewSerializer(serializers.ModelSerializer):
-    author = serializers.CharField(source="author.user.username", allow_blank=True)
-    film_reviewed = FilmSerializerForDisplayInFilmographies(many=False, read_only=True)
+    author = serializers.CharField(source="author.user.username", allow_blank=True, read_only=True)
+    film_reviewed = FilmSerializerForDisplayInFilmographies(many=False, read_only=True, required=False)
 
     class Meta:
         model = FilmReview
@@ -69,4 +69,5 @@ class ExtendedFilmReviewSerializer(serializers.ModelSerializer):
             "written_on",
             "content",
             "film_reviewed",
+            "url_name"
         ]

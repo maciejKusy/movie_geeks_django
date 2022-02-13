@@ -15,7 +15,7 @@ class BasicFilmAwardSerializer(serializers.ModelSerializer):
 
 
 class ExtendedFilmAwardSerializer(serializers.ModelSerializer):
-    recipients = serializers.ListField(source="get_all_recipients")
+    recipients = serializers.ListField(source="get_all_recipients", required=False)
 
     class Meta:
         model = FilmAward
@@ -39,10 +39,10 @@ class BasicReceivedFilmAwardSerializer(serializers.ModelSerializer):
 
 
 class ExtendedReceivedFilmAwardSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(source="name.name")
+    name = serializers.CharField(source="name.name", read_only=True)
     awarded_for = FilmSerializerForDisplayInFilmographies(many=False, read_only=True)
     recipient = PerformerSerializerForDisplayInCast(many=False, read_only=True)
 
     class Meta:
         model = FilmAwardReceived
-        fields = ["id", "name", "awarded_on", "awarded_for", "recipient", "url_name"]
+        fields = ["id", "name", "awarded_on", "award_status", "awarded_for", "recipient", "url_name"]
