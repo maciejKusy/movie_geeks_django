@@ -10,20 +10,19 @@ class FilmAwardReceived(models.Model):
         ('nominee', 'nominee'),
     ]
     name = models.ForeignKey(
-        "awards.FilmAward", on_delete=models.CASCADE, blank=True, null=True
+        "awards.FilmAward", on_delete=models.CASCADE, blank=False
     )
     awarded_on = models.DateField(blank=False)
-    award_status = models.CharField(max_length=20, choices=AWARD_STATUSES, blank=False, default='winner')
-    category = models.CharField(max_length=50, blank=False, default='category')
+    award_status = models.CharField(max_length=20, choices=AWARD_STATUSES, blank=False)
+    category = models.CharField(max_length=50, blank=False)
     awarded_for = models.ForeignKey(
-        "movies.Film", on_delete=models.PROTECT, blank=True, null=True
+        "movies.Film", on_delete=models.PROTECT, blank=False
     )
     recipient = models.ForeignKey(
         "performers.Performer",
         related_name="awards",
         on_delete=models.CASCADE,
-        blank=True,
-        null=True
+        blank=False
     )
     url_name = models.SlugField(unique=True, null=True, blank=True)
 
@@ -38,9 +37,9 @@ class FilmAwardReceived(models.Model):
 
 
 class FilmAward(models.Model):
-    name = models.CharField(max_length=50, blank=False, default='award')
-    date_established = models.DateField(blank=True)
-    description = models.TextField(max_length=200, blank=True)
+    name = models.CharField(max_length=50, blank=False)
+    date_established = models.DateField(blank=False)
+    description = models.TextField(max_length=200, blank=False)
     url_name = models.SlugField(unique=True, null=True, blank=True)
 
     def __str__(self):

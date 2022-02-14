@@ -4,8 +4,8 @@ from django.utils.text import slugify
 
 class Performer(models.Model):
     full_name = models.CharField(max_length=50, blank=False)
-    birthdate = models.DateField(blank=True, null=True)
-    biography = models.TextField(max_length=1000, blank=True, null=True)
+    birthdate = models.DateField(blank=False)
+    biography = models.TextField(max_length=1200, blank=False)
     url_name = models.SlugField(unique=True, null=True, blank=True)
 
     def __str__(self):

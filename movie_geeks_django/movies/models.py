@@ -7,7 +7,9 @@ from django.utils.text import slugify
 
 
 class Film(models.Model):
-    name = models.CharField(max_length=50, blank=False)
+    name = models.CharField(
+        max_length=50,
+        blank=False)
     year_of_release = models.IntegerField(
         default=1,
         validators=[
@@ -19,18 +21,20 @@ class Film(models.Model):
     genre = models.ManyToManyField(
         "movies.Genre",
         related_name="films",
-        blank=False
+        blank=True
     )
-    synopsis = models.TextField(max_length=200, blank=False)
-    director = models.ForeignKey(
+    synopsis = models.TextField(
+        max_length=1200,
+        blank=False)
+    director = models.ManyToManyField(
         "performers.Performer",
         related_name="directed",
-        on_delete=models.PROTECT,
-        blank=True,
-        null=True
+        blank=True
     )
     cast = models.ManyToManyField(
-        "performers.Performer", related_name="starred_in", blank=True
+        "performers.Performer",
+        related_name="starred_in",
+        blank=True
     )
     url_name = models.SlugField(unique=True, max_length=51, null=True, blank=True)
 
@@ -45,7 +49,6 @@ class Film(models.Model):
 
 class Genre(models.Model):
     name = models.CharField(max_length=30, blank=False)
-    description = models.TextField(max_length=400, blank=True)
     url_name = models.SlugField(unique=True, max_length=40, null=True, blank=True)
 
     def __str__(self):
@@ -69,9 +72,9 @@ class FilmReview(models.Model):
     )
     title = models.CharField(max_length=50, blank=False)
     written_on = models.DateTimeField(default=timezone.now)
-    content = models.TextField(max_length=500, blank=True, null=True)
+    content = models.TextField(max_length=500, blank=False)
     film_reviewed = models.ForeignKey(
-        Film, related_name="reviews", on_delete=models.CASCADE, blank=False
+        Film, related_name="reviews", on_delete=models.CASCADE, blank=False, null=True
     )
     url_name = models.SlugField(unique=True, max_length=120, null=True, blank=True)
 

@@ -5,7 +5,7 @@ from performers.nested_serializers import PerformerSerializerForDisplayInCast
 
 from .models import FilmAward, FilmAwardReceived
 
-# --------------------------------------------##GENERAL AWARDS BELOW##--------------------------------------------#
+# --------------------------------------------##GENERAL AWARDS serializers##-------------------------------------------#
 
 
 class BasicFilmAwardSerializer(serializers.ModelSerializer):
@@ -29,7 +29,7 @@ class ExtendedFilmAwardSerializer(serializers.ModelSerializer):
         ]
 
 
-# --------------------------------------------##RECEIVED AWARDS BELOW##--------------------------------------------#
+# --------------------------------------------##RECEIVED AWARDS serializers##------------------------------------------#
 
 
 class BasicReceivedFilmAwardSerializer(serializers.ModelSerializer):

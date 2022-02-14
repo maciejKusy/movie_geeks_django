@@ -7,17 +7,21 @@ from .nested_serializers import (FilmReviewSerializerForDisplayInLists,
                                  FilmSerializerForDisplayInFilmographies,
                                  GenreSerializerForDisplayInFilmInfo)
 
+# ----------------------------------------- FILM serializers ---------------------------------------------------------#
+
 
 class BasicFilmSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Film
-        fields = "__all__"
+        # fields = "__all__"
+        fields = ['id', 'name', 'year_of_release', 'genre', 'synopsis', 'director', 'cast']
 
 
 class ExtendedFilmSerializer(serializers.ModelSerializer):
-    genre = GenreSerializerForDisplayInFilmInfo(many=False, read_only=True, required=False)
-    director = PerformerSerializerForDisplayInCast(many=False, read_only=True, required=False)
-    cast = PerformerSerializerForDisplayInCast(many=True, read_only=True)
+    genre = GenreSerializerForDisplayInFilmInfo(many=True, read_only=True, required=False)
+    director = PerformerSerializerForDisplayInCast(many=True, read_only=True, required=False)
+    cast = PerformerSerializerForDisplayInCast(many=True, read_only=True, required=False)
     reviews = FilmReviewSerializerForDisplayInLists(many=True, read_only=True)
 
     class Meta:
@@ -33,6 +37,7 @@ class ExtendedFilmSerializer(serializers.ModelSerializer):
             "reviews",
             "url_name",
         ]
+# ----------------------------------------- GENRE serializers ---------------------------------------------------------#
 
 
 class BasicGenreSerializer(serializers.ModelSerializer):
@@ -46,7 +51,8 @@ class ExtendedGenreSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Genre
-        fields = ["id", "name", "description", "films", "url_name"]
+        fields = ["id", "name", "films", "url_name"]
+# ----------------------------------------- REVIEW serializers --------------------------------------------------------#
 
 
 class BasicFilmReviewSerializer(serializers.ModelSerializer):
@@ -57,7 +63,7 @@ class BasicFilmReviewSerializer(serializers.ModelSerializer):
 
 class ExtendedFilmReviewSerializer(serializers.ModelSerializer):
     author = serializers.CharField(source="author.user.username", allow_blank=True, read_only=True)
-    film_reviewed = FilmSerializerForDisplayInFilmographies(many=False, read_only=True, required=False)
+    film_reviewed = FilmSerializerForDisplayInFilmographies(many=False, read_only=True)
 
     class Meta:
         model = FilmReview
