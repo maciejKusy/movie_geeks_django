@@ -14,14 +14,13 @@ class BasicFilmSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Film
-        # fields = "__all__"
-        fields = ['id', 'name', 'year_of_release', 'genre', 'synopsis', 'director', 'cast']
+        fields = "__all__"
 
 
 class ExtendedFilmSerializer(serializers.ModelSerializer):
-    genre = GenreSerializerForDisplayInFilmInfo(many=True, read_only=True, required=False)
-    director = PerformerSerializerForDisplayInCast(many=True, read_only=True, required=False)
-    cast = PerformerSerializerForDisplayInCast(many=True, read_only=True, required=False)
+    genre = GenreSerializerForDisplayInFilmInfo(many=True, required=False)
+    director = PerformerSerializerForDisplayInCast(many=True, required=False)
+    cast = PerformerSerializerForDisplayInCast(many=True, required=False)
     reviews = FilmReviewSerializerForDisplayInLists(many=True, read_only=True)
 
     class Meta:
@@ -37,6 +36,8 @@ class ExtendedFilmSerializer(serializers.ModelSerializer):
             "reviews",
             "url_name",
         ]
+
+
 # ----------------------------------------- GENRE serializers ---------------------------------------------------------#
 
 

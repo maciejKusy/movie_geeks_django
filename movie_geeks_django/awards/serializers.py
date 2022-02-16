@@ -8,12 +8,6 @@ from .models import FilmAward, FilmAwardReceived
 # --------------------------------------------##GENERAL AWARDS serializers##-------------------------------------------#
 
 
-class BasicFilmAwardSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FilmAward
-        fields = "__all__"
-
-
 class ExtendedFilmAwardSerializer(serializers.ModelSerializer):
     recipients = serializers.ListField(source="get_all_recipients", required=False)
 
