@@ -6,13 +6,20 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('awards', '0006_remove_filmawardreceived_type_filmawardreceived_name_and_more'),
+        (
+            "awards",
+            "0006_remove_filmawardreceived_type_filmawardreceived_name_and_more",
+        ),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='filmawardreceived',
-            name='award_status',
-            field=models.CharField(choices=[('winner', 'winner'), ('nominee', 'nominee')], max_length=20, null=True),
+            model_name="filmawardreceived",
+            name="award_status",
+            field=models.CharField(
+                choices=[("winner", "winner"), ("nominee", "nominee")],
+                max_length=20,
+                null=True,
+            ),
         ),
     ]

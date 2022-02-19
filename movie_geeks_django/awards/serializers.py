@@ -1,11 +1,16 @@
-from rest_framework import serializers
-
 from movies.nested_serializers import FilmSerializerForDisplayInFilmographies
 from performers.nested_serializers import PerformerSerializerForDisplayInCast
+from rest_framework import serializers
 
 from .models import FilmAward, FilmAwardReceived
 
 # --------------------------------------------##GENERAL AWARDS serializers##-------------------------------------------#
+
+
+class BasicFilmAwardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FilmAward
+        fields = "__all__"
 
 
 class ExtendedFilmAwardSerializer(serializers.ModelSerializer):
@@ -39,4 +44,12 @@ class ExtendedReceivedFilmAwardSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FilmAwardReceived
-        fields = ["id", "name", "awarded_on", "award_status", "awarded_for", "recipient", "url_name"]
+        fields = [
+            "id",
+            "name",
+            "awarded_on",
+            "award_status",
+            "awarded_for",
+            "recipient",
+            "url_name",
+        ]

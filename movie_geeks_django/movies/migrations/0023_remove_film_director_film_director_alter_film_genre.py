@@ -6,23 +6,27 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('performers', '0007_alter_performer_biography_alter_performer_birthdate'),
-        ('movies', '0022_alter_filmreview_author'),
+        ("performers", "0007_alter_performer_biography_alter_performer_birthdate"),
+        ("movies", "0022_alter_filmreview_author"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='film',
-            name='director',
+            model_name="film",
+            name="director",
         ),
         migrations.AddField(
-            model_name='film',
-            name='director',
-            field=models.ManyToManyField(blank=True, related_name='directed', to='performers.Performer'),
+            model_name="film",
+            name="director",
+            field=models.ManyToManyField(
+                blank=True, related_name="directed", to="performers.Performer"
+            ),
         ),
         migrations.AlterField(
-            model_name='film',
-            name='genre',
-            field=models.ManyToManyField(blank=True, related_name='films', to='movies.Genre'),
+            model_name="film",
+            name="genre",
+            field=models.ManyToManyField(
+                blank=True, related_name="films", to="movies.Genre"
+            ),
         ),
     ]

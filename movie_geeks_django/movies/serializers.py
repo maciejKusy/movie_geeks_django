@@ -1,6 +1,5 @@
-from rest_framework import serializers
-
 from performers.nested_serializers import PerformerSerializerForDisplayInCast
+from rest_framework import serializers
 
 from .models import Film, FilmReview, Genre
 from .nested_serializers import (FilmReviewSerializerForDisplayInLists,
@@ -11,7 +10,6 @@ from .nested_serializers import (FilmReviewSerializerForDisplayInLists,
 
 
 class BasicFilmSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Film
         fields = "__all__"
@@ -53,6 +51,8 @@ class ExtendedGenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
         fields = ["id", "name", "films", "url_name"]
+
+
 # ----------------------------------------- REVIEW serializers --------------------------------------------------------#
 
 
@@ -63,7 +63,9 @@ class BasicFilmReviewSerializer(serializers.ModelSerializer):
 
 
 class ExtendedFilmReviewSerializer(serializers.ModelSerializer):
-    author = serializers.CharField(source="author.user.username", allow_blank=True, read_only=True)
+    author = serializers.CharField(
+        source="author.user.username", allow_blank=True, read_only=True
+    )
     film_reviewed = FilmSerializerForDisplayInFilmographies(many=False, read_only=True)
 
     class Meta:
@@ -76,5 +78,5 @@ class ExtendedFilmReviewSerializer(serializers.ModelSerializer):
             "written_on",
             "content",
             "film_reviewed",
-            "url_name"
+            "url_name",
         ]

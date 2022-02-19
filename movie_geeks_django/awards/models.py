@@ -1,17 +1,14 @@
 from django.db import models
 from django.utils.text import slugify
-
 from performers.models import Performer
 
 
 class FilmAwardReceived(models.Model):
     AWARD_STATUSES = [
-        ('winner', 'winner'),
-        ('nominee', 'nominee'),
+        ("winner", "winner"),
+        ("nominee", "nominee"),
     ]
-    name = models.ForeignKey(
-        "awards.FilmAward", on_delete=models.CASCADE, blank=False
-    )
+    name = models.ForeignKey("awards.FilmAward", on_delete=models.CASCADE, blank=False)
     awarded_on = models.DateField(blank=False)
     award_status = models.CharField(max_length=20, choices=AWARD_STATUSES, blank=False)
     category = models.CharField(max_length=50, blank=False)
@@ -22,7 +19,7 @@ class FilmAwardReceived(models.Model):
         "performers.Performer",
         related_name="awards",
         on_delete=models.CASCADE,
-        blank=False
+        blank=False,
     )
     url_name = models.SlugField(unique=True, null=True, blank=True)
 

@@ -7,34 +7,22 @@ from django.utils.text import slugify
 
 
 class Film(models.Model):
-    name = models.CharField(
-        max_length=50,
-        blank=False)
+    name = models.CharField(max_length=50, blank=False)
     year_of_release = models.IntegerField(
         default=1,
         validators=[
             MaxValueValidator(datetime.now().year + 2),
             MinValueValidator(1888),
         ],
-        blank=False
+        blank=False,
     )
-    genre = models.ManyToManyField(
-        "movies.Genre",
-        related_name="films",
-        blank=True
-    )
-    synopsis = models.TextField(
-        max_length=1200,
-        blank=False)
+    genre = models.ManyToManyField("movies.Genre", related_name="films", blank=True)
+    synopsis = models.TextField(max_length=1200, blank=False)
     director = models.ManyToManyField(
-        "performers.Performer",
-        related_name="directed",
-        blank=True
+        "performers.Performer", related_name="directed", blank=True
     )
     cast = models.ManyToManyField(
-        "performers.Performer",
-        related_name="starred_in",
-        blank=True
+        "performers.Performer", related_name="starred_in", blank=True
     )
     url_name = models.SlugField(unique=True, max_length=51, null=True, blank=True)
 
@@ -65,7 +53,7 @@ class FilmReview(models.Model):
         related_name="reviews",
         on_delete=models.PROTECT,
         blank=True,
-        null=True
+        null=True,
     )
     rating = models.IntegerField(
         default=1, validators=[MaxValueValidator(10), MinValueValidator(1)], blank=False
@@ -84,4 +72,3 @@ class FilmReview(models.Model):
     def save(self, *args, **kwargs):
         self.url_name = slugify(f"{self.title} {str(self.author)}")
         super().save(*args, **kwargs)
-

@@ -1,8 +1,7 @@
-from rest_framework import serializers
-
 from awards.nested_serializers import \
     ReceivedReceivedAwardSerializerForDisplayInAwardLists
 from movies.nested_serializers import FilmSerializerForDisplayInFilmographies
+from rest_framework import serializers
 
 from .models import Performer
 
