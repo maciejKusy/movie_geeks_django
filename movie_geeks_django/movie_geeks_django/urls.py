@@ -17,9 +17,10 @@ from awards.views import FilmAwardReceivedView, FilmAwardView
 from django.contrib import admin
 from django.urls import include, path
 from movies.views import (FilmReviewForUserView, FilmReviewView, FilmView,
-                          GenreView)
+                          GenreView, FilmViewForDirectedFilmsList, FilmViewForFilmsStarredInList)
 from performers.views import PerformerView
 from rest_framework import routers
+from rest_framework_nested import routers
 
 router = routers.DefaultRouter()
 router.register("films", FilmView, basename="film-view")
@@ -34,8 +35,13 @@ router.register(
 )  # this is here just for dev purposes
 router.register("my-film-reviews", FilmReviewForUserView, basename="my-film-reviews")
 
+performer_router = routers.NestedSimpleRouter(router, r'performers', lookup='performer')
+performer_router.register(r'films-directed', FilmViewForDirectedFilmsList, basename='director-films')
+performer_router.register(r'starred-in', FilmViewForFilmsStarredInList, basename='actor-films')
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("login/", include("rest_framework.urls")),
     path("", include(router.urls)),
+    path("", include(performer_router.urls))
 ]

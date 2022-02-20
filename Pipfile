@@ -11,6 +11,7 @@ python-dotenv = "*"
 tzdata = "*"
 dj-database-url = "*"
 whitenoise = "*"
+drf-nested-routers = "*"
 
 [dev-packages]
 

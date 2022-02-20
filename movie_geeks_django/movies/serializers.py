@@ -20,6 +20,7 @@ class ExtendedFilmSerializer(serializers.ModelSerializer):
     director = PerformerSerializerForDisplayInCast(many=True, required=False)
     cast = PerformerSerializerForDisplayInCast(many=True, required=False)
     reviews = FilmReviewSerializerForDisplayInLists(many=True, read_only=True)
+    overall_score = serializers.FloatField(source="get_score")
 
     class Meta:
         model = Film
@@ -32,6 +33,7 @@ class ExtendedFilmSerializer(serializers.ModelSerializer):
             "director",
             "cast",
             "reviews",
+            "overall_score",
             "url_name",
         ]
 

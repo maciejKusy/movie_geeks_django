@@ -4,6 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
+from statistics import mean
 
 
 class Film(models.Model):
@@ -33,6 +34,16 @@ class Film(models.Model):
         self.full_clean()
         self.url_name = slugify(f"{self.name} {self.year_of_release}")
         super().save(*args, **kwargs)
+
+    def get_score(self):
+        reviews = FilmReview.objects.all().filter(film_reviewed=self.id)
+        if reviews:
+            score_list = list()
+            reviews_list = reviews.iterator()
+            for review in reviews_list:
+                score_list.append(review.rating)
+            return round(mean(score_list), 1)
+        return 0
 
 
 class Genre(models.Model):
