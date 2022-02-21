@@ -20,16 +20,13 @@ from django.urls import include, path
 from movies.views import (FilmReviewForUserView, FilmReviewView,
                           FilmReviewViewForLists, FilmsDirectedViewForLists,
                           FilmsStarredInViewForLists, FilmView, GenreView)
-from performers.views import PerformerView, PerformerViewForCastLists
+from performers.views import PerformerView, PerformerViewForCastLists, PerformerViewForRecipientLists
 from rest_framework_nested import routers
 
 router = routers.DefaultRouter()
 router.register("films", FilmView, basename="film-view")
 router.register("performers", PerformerView, basename="performer-view")
 router.register("film-awards", FilmAwardView, basename="film-award-view")
-router.register(
-    "film-awards-received", FilmAwardReceivedView, basename="film-award-received-view"
-)
 router.register("genres", GenreView, basename="genre-view")
 router.register(
     "film-reviews", FilmReviewView, basename="film-reviews"
@@ -53,10 +50,15 @@ film_router = routers.NestedSimpleRouter(router, r"films", lookup="film")
 film_router.register(r"full-cast", PerformerViewForCastLists, basename="film-cast")
 film_router.register(r"reviews", FilmReviewViewForLists, basename="film-reviews")
 
+film_award_router = routers.NestedSimpleRouter(router, r'film-awards', lookup='filmaward')
+film_award_router.register(r'recipients', PerformerViewForRecipientLists, basename='award-recipients')
+film_award_router.register(r'awarded', FilmAwardReceivedView, basename='award-instances')
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("login/", include("rest_framework.urls")),
     path("", include(router.urls)),
     path("", include(performer_router.urls)),
     path("", include(film_router.urls)),
+    path("", include(film_award_router.urls)),
 ]

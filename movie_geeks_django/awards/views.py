@@ -22,10 +22,14 @@ class FilmAwardView(SerializerDifferentiationMixin, ModelViewSet):
 
 class FilmAwardReceivedView(SerializerDifferentiationMixin, ModelViewSet):
     serializer_class = BasicReceivedFilmAwardSerializer
-    queryset = FilmAwardReceived.objects.all()
     lookup_field = "url_name"
     GET_serializer = ExtendedReceivedFilmAwardSerializer
     POST_serializer = BasicReceivedFilmAwardSerializer
+
+    def get_queryset(self):
+        award = FilmAward.objects.all().filter(url_name=self.kwargs['filmaward_url_name'])[0]
+        awards_received_of_same_type = FilmAwardReceived.objects.all().filter(name=award)
+        return awards_received_of_same_type
 
 
 class FilmAwardReceivedViewForLists(ModelViewSet):
