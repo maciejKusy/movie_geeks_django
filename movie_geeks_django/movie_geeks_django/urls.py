@@ -40,7 +40,7 @@ router.register("my-film-reviews", FilmReviewForUserView, basename="my-film-revi
 
 performer_router = routers.NestedSimpleRouter(router, r"performers", lookup="performer")
 performer_router.register(
-    r"films-directed", FilmsDirectedViewForLists, basename="director-films"
+    r"directed", FilmsDirectedViewForLists, basename="director-films"
 )
 performer_router.register(
     r"starred-in", FilmsStarredInViewForLists, basename="actor-films"

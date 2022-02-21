@@ -1,6 +1,6 @@
 from django.db.models import QuerySet
 from performers.models import Performer
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.viewsets import ModelViewSet
 
 from movie_geeks_django.mixins import SerializerDifferentiationMixin
@@ -51,7 +51,7 @@ class GenreView(SerializerDifferentiationMixin, ModelViewSet):
 
 class FilmReviewView(SerializerDifferentiationMixin, ModelViewSet):
     serializer_class = BasicFilmReviewSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdminUser]
     queryset = FilmReview.objects.all()
     lookup_field = "url_name"
     GET_serializer = ExtendedFilmReviewSerializer
