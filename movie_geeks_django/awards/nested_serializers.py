@@ -3,9 +3,12 @@ from rest_framework import serializers
 from .models import FilmAwardReceived
 
 
-class ReceivedReceivedAwardSerializerForDisplayInAwardLists(
-    serializers.ModelSerializer
-):
+class ReceivedReceivedAwardSerializerForDisplayInLists(serializers.ModelSerializer):
+    """
+    Serves to serialize/deserialize the FilmAwardReceived objects for lists of awards - only basic information
+    exposed to user.
+    """
+
     name = serializers.CharField()
     awarded_for = serializers.CharField()
 

@@ -18,4 +18,4 @@ class GenreSerializerForDisplayInFilmInfo(serializers.ModelSerializer):
 class FilmReviewSerializerForDisplayInLists(serializers.ModelSerializer):
     class Meta:
         model = FilmReview
-        fields = ["id", "title", "rating"]
+        fields = ["id", "title", "rating", "written_on", "content"]

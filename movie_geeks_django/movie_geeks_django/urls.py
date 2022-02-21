@@ -13,13 +13,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from awards.views import FilmAwardReceivedView, FilmAwardView
+from awards.views import (FilmAwardReceivedView, FilmAwardReceivedViewForLists,
+                          FilmAwardView)
 from django.contrib import admin
 from django.urls import include, path
-from movies.views import (FilmReviewForUserView, FilmReviewView, FilmView,
-                          GenreView, FilmViewForDirectedFilmsList, FilmViewForFilmsStarredInList)
-from performers.views import PerformerView
-from rest_framework import routers
+from movies.views import (FilmReviewForUserView, FilmReviewView,
+                          FilmReviewViewForLists, FilmsDirectedViewForLists,
+                          FilmsStarredInViewForLists, FilmView, GenreView)
+from performers.views import PerformerView, PerformerViewForCastLists
 from rest_framework_nested import routers
 
 router = routers.DefaultRouter()
@@ -35,13 +36,27 @@ router.register(
 )  # this is here just for dev purposes
 router.register("my-film-reviews", FilmReviewForUserView, basename="my-film-reviews")
 
-performer_router = routers.NestedSimpleRouter(router, r'performers', lookup='performer')
-performer_router.register(r'films-directed', FilmViewForDirectedFilmsList, basename='director-films')
-performer_router.register(r'starred-in', FilmViewForFilmsStarredInList, basename='actor-films')
+# ------------------------------------------ Nested Routers below ------------------------------------------------- #
+
+performer_router = routers.NestedSimpleRouter(router, r"performers", lookup="performer")
+performer_router.register(
+    r"films-directed", FilmsDirectedViewForLists, basename="director-films"
+)
+performer_router.register(
+    r"starred-in", FilmsStarredInViewForLists, basename="actor-films"
+)
+performer_router.register(
+    r"awards-received", FilmAwardReceivedViewForLists, basename="performer-awards"
+)
+
+film_router = routers.NestedSimpleRouter(router, r"films", lookup="film")
+film_router.register(r"full-cast", PerformerViewForCastLists, basename="film-cast")
+film_router.register(r"reviews", FilmReviewViewForLists, basename="film-reviews")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("login/", include("rest_framework.urls")),
     path("", include(router.urls)),
-    path("", include(performer_router.urls))
+    path("", include(performer_router.urls)),
+    path("", include(film_router.urls)),
 ]

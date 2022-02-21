@@ -4,6 +4,11 @@ from performers.models import Performer
 
 
 class FilmAwardReceived(models.Model):
+    """
+    Model for storing actual film awards - that is awards that were received by someone. Think of this as
+    iterations of the general FilmAward model.
+    """
+
     AWARD_STATUSES = [
         ("winner", "winner"),
         ("nominee", "nominee"),
@@ -27,6 +32,9 @@ class FilmAwardReceived(models.Model):
         return f"{str(self.name)} received by {str(self.recipient)} for {str(self.awarded_for)}."
 
     def save(self, *args, **kwargs):
+        """
+        Overwritten in order to ensure the url_name field is filled out whenever the model is saved.
+        """
         self.url_name = slugify(
             f"{str(self.name)} {self.awarded_on} {str(self.recipient)}"
         )
@@ -43,12 +51,18 @@ class FilmAward(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
+        """
+        Overwritten in order to ensure the url_name field is filled out whenever the model is saved.
+        """
         if not self.url_name:
             self.url_name = slugify(self.name)
         super().save(*args, **kwargs)
 
     @property
     def get_all_recipients(self):
+        """
+        Queries the database for all awards of the same type (same name) and retrieves their recipients.
+        """
         all_awards_of_same_type = (
             FilmAwardReceived.objects.all().filter(name=self.id).values()
         )

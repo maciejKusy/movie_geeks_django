@@ -1,13 +1,18 @@
 from datetime import datetime
+from statistics import mean
 
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
-from statistics import mean
 
 
 class Film(models.Model):
+    """
+    Used for storing info on particular films released between 1888 and two years into the future on any
+    given year.
+    """
+
     name = models.CharField(max_length=50, blank=False)
     year_of_release = models.IntegerField(
         default=1,
@@ -36,6 +41,10 @@ class Film(models.Model):
         super().save(*args, **kwargs)
 
     def get_score(self):
+        """
+        Used to ascertain the aggregated score of a film based on user reviews. Queries the database for
+        reviews dedicated to a particular film and calculates the average score.
+        """
         reviews = FilmReview.objects.all().filter(film_reviewed=self.id)
         if reviews:
             score_list = list()
@@ -47,6 +56,10 @@ class Film(models.Model):
 
 
 class Genre(models.Model):
+    """
+    Used to store information on particular genres.
+    """
+
     name = models.CharField(max_length=30, blank=False)
     url_name = models.SlugField(unique=True, max_length=40, null=True, blank=True)
 
@@ -59,6 +72,10 @@ class Genre(models.Model):
 
 
 class FilmReview(models.Model):
+    """
+    Stores information for individual movie reviews created by users.
+    """
+
     author = models.ForeignKey(
         "users.UserProfile",
         related_name="reviews",

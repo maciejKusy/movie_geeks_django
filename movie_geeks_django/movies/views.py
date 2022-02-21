@@ -1,13 +1,13 @@
 from django.db.models import QuerySet
+from performers.models import Performer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from movie_geeks_django.mixins import SerializerDifferentiationMixin
-from performers.models import Performer
-from performers.serializers import BasicPerformerSerializer
 
 from .models import Film, FilmReview, Genre
-from .nested_serializers import FilmSerializerForDisplayInFilmographies
+from .nested_serializers import (FilmReviewSerializerForDisplayInLists,
+                                 FilmSerializerForDisplayInFilmographies)
 from .serializers import (BasicFilmReviewSerializer, BasicFilmSerializer,
                           BasicGenreSerializer, ExtendedFilmReviewSerializer,
                           ExtendedFilmSerializer, ExtendedGenreSerializer)
@@ -21,19 +21,23 @@ class FilmView(SerializerDifferentiationMixin, ModelViewSet):
     POST_serializer = BasicFilmSerializer
 
 
-class FilmViewForDirectedFilmsList(ModelViewSet):
+class FilmsDirectedViewForLists(ModelViewSet):
     serializer_class = FilmSerializerForDisplayInFilmographies
 
     def get_queryset(self):
-        director = Performer.objects.all().filter(url_name=self.kwargs['performer_url_name'])[0]
+        director = Performer.objects.all().filter(
+            url_name=self.kwargs["performer_url_name"]
+        )[0]
         return Film.objects.all().filter(director=director)
 
 
-class FilmViewForFilmsStarredInList(ModelViewSet):
+class FilmsStarredInViewForLists(ModelViewSet):
     serializer_class = FilmSerializerForDisplayInFilmographies
 
     def get_queryset(self):
-        actor = Performer.objects.all().filter(url_name=self.kwargs['performer_url_name'])[0]
+        actor = Performer.objects.all().filter(
+            url_name=self.kwargs["performer_url_name"]
+        )[0]
         return Film.objects.all().filter(cast=actor)
 
 
@@ -54,6 +58,14 @@ class FilmReviewView(SerializerDifferentiationMixin, ModelViewSet):
     POST_serializer = BasicFilmReviewSerializer
 
 
+class FilmReviewViewForLists(ModelViewSet):
+    serializer_class = FilmReviewSerializerForDisplayInLists
+
+    def get_queryset(self):
+        film = Film.objects.all().filter(url_name=self.kwargs["film_url_name"])[0]
+        return FilmReview.objects.all().filter(film_reviewed=film)
+
+
 class FilmReviewForUserView(SerializerDifferentiationMixin, ModelViewSet):
     serializer_class = BasicFilmReviewSerializer
     permission_classes = [IsAuthenticated]
@@ -63,6 +75,9 @@ class FilmReviewForUserView(SerializerDifferentiationMixin, ModelViewSet):
     POST_serializer = BasicFilmReviewSerializer
 
     def get_queryset(self):
+        """
+        Queries the database for film reviews and filters out only ones that are authored by the current session user.
+        """
         assert self.queryset is not None, (
             "'%s' should either include a `queryset` attribute, "
             "or override the `get_queryset()` method." % self.__class__.__name__
@@ -75,4 +90,7 @@ class FilmReviewForUserView(SerializerDifferentiationMixin, ModelViewSet):
         return queryset
 
     def perform_create(self, serializer):
+        """
+        Ensures that the author of a film review (session user) us saved automatically in the model.
+        """
         serializer.save(author=self.request.user.userprofile)

@@ -1,4 +1,4 @@
-from performers.nested_serializers import PerformerSerializerForDisplayInCast
+from performers.nested_serializers import PerformerSerializerForDisplayInLists
 from rest_framework import serializers
 
 from .models import Film, FilmReview, Genre
@@ -16,9 +16,14 @@ class BasicFilmSerializer(serializers.ModelSerializer):
 
 
 class ExtendedFilmSerializer(serializers.ModelSerializer):
+    """
+    Serves to expose extended information to the user. To be edited if additional info is to be exposed to
+    a GET response.
+    """
+
     genre = GenreSerializerForDisplayInFilmInfo(many=True, required=False)
-    director = PerformerSerializerForDisplayInCast(many=True, required=False)
-    cast = PerformerSerializerForDisplayInCast(many=True, required=False)
+    director = PerformerSerializerForDisplayInLists(many=True, required=False)
+    cast = PerformerSerializerForDisplayInLists(many=True, required=False)
     reviews = FilmReviewSerializerForDisplayInLists(many=True, read_only=True)
     overall_score = serializers.FloatField(source="get_score")
 
@@ -48,6 +53,11 @@ class BasicGenreSerializer(serializers.ModelSerializer):
 
 
 class ExtendedGenreSerializer(serializers.ModelSerializer):
+    """
+    Serves to expose extended information to the user. To be edited if additional info is to be exposed to
+    a GET response.
+    """
+
     films = FilmSerializerForDisplayInFilmographies(many=True, read_only=True)
 
     class Meta:
@@ -65,6 +75,11 @@ class BasicFilmReviewSerializer(serializers.ModelSerializer):
 
 
 class ExtendedFilmReviewSerializer(serializers.ModelSerializer):
+    """
+    Serves to expose extended information to the user. To be edited if additional info is to be exposed to
+    a GET response.
+    """
+
     author = serializers.CharField(
         source="author.user.username", allow_blank=True, read_only=True
     )

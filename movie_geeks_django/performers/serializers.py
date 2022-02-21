@@ -1,5 +1,5 @@
 from awards.nested_serializers import \
-    ReceivedReceivedAwardSerializerForDisplayInAwardLists
+    ReceivedReceivedAwardSerializerForDisplayInLists
 from movies.nested_serializers import FilmSerializerForDisplayInFilmographies
 from rest_framework import serializers
 
@@ -13,11 +13,14 @@ class BasicPerformerSerializer(serializers.ModelSerializer):
 
 
 class ExtendedPerformerSerializer(serializers.ModelSerializer):
+    """
+    Serves to expose extended information to the user. To be edited if additional info is to be exposed to
+    a GET response.
+    """
+
     starred_in = FilmSerializerForDisplayInFilmographies(many=True, read_only=True)
     directed = FilmSerializerForDisplayInFilmographies(many=True, read_only=True)
-    awards = ReceivedReceivedAwardSerializerForDisplayInAwardLists(
-        many=True, read_only=True
-    )
+    awards = ReceivedReceivedAwardSerializerForDisplayInLists(many=True, read_only=True)
 
     class Meta:
         model = Performer
