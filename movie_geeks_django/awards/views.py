@@ -1,3 +1,5 @@
+from django.http import Http404
+
 from performers.models import Performer
 from rest_framework.viewsets import ModelViewSet
 
@@ -27,7 +29,9 @@ class FilmAwardReceivedView(SerializerDifferentiationMixin, ModelViewSet):
     POST_serializer = BasicReceivedFilmAwardSerializer
 
     def get_queryset(self):
-        award = FilmAward.objects.all().filter(url_name=self.kwargs['filmaward_url_name'])[0]
+        award = FilmAward.objects.all().filter(url_name=self.kwargs['filmaward_url_name']).first()
+        if not award:
+            raise Http404
         awards_received_of_same_type = FilmAwardReceived.objects.all().filter(name=award)
         return awards_received_of_same_type
 
@@ -42,5 +46,7 @@ class FilmAwardReceivedViewForLists(ModelViewSet):
     def get_queryset(self):
         recipient = Performer.objects.all().filter(
             url_name=self.kwargs["performer_url_name"]
-        )[0]
+        ).first()
+        if not recipient:
+            raise Http404
         return FilmAwardReceived.objects.all().filter(recipient=recipient)

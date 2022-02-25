@@ -61,4 +61,5 @@ urlpatterns = [
     path("", include(performer_router.urls)),
     path("", include(film_router.urls)),
     path("", include(film_award_router.urls)),
+    path('__debug__/', include('debug_toolbar.urls')),
 ]

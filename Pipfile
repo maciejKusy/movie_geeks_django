@@ -12,6 +12,7 @@ tzdata = "*"
 dj-database-url = "*"
 whitenoise = "*"
 drf-nested-routers = "*"
+django-debug-toolbar = "*"
 
 [dev-packages]
 

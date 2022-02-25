@@ -1,3 +1,5 @@
+from django.http import Http404
+
 from awards.models import FilmAward, FilmAwardReceived
 from awards.serializers import ExtendedFilmAwardSerializer
 from movies.models import Film
@@ -22,7 +24,9 @@ class PerformerViewForCastLists(ModelViewSet):
     serializer_class = PerformerSerializerForDisplayInLists
 
     def get_queryset(self):
-        film = Film.objects.all().filter(url_name=self.kwargs["film_url_name"])[0]
+        film = Film.objects.all().filter(url_name=self.kwargs["film_url_name"]).first()
+        if not film:
+            raise Http404
         return Performer.objects.all().filter(starred_in=film)
 
 
@@ -37,9 +41,8 @@ class PerformerViewForRecipientLists(ModelViewSet):
         3) iterates over the retrieved FilmAwardsReceived and creates a list of their recipients, effectively creating
         a list of all recipients of a given type of award.
         """
-        award = FilmAward.objects.all().filter(url_name=self.kwargs['filmaward_url_name'])[0]
-        awards_received_of_same_type = FilmAwardReceived.objects.all().filter(name=award)
-        recipients_list = list()
-        for award_received in awards_received_of_same_type.iterator():
-            recipients_list.append(award_received.recipient)
-        return recipients_list
+        award = FilmAward.objects.all().filter(url_name=self.kwargs['filmaward_url_name']).first()
+        if not award:
+            raise Http404
+        all_performers = Performer.objects.all().filter(awards__isnull=False, awards__name=award).distinct()
+        return all_performers

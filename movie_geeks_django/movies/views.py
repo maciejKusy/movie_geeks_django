@@ -1,4 +1,6 @@
 from django.db.models import QuerySet
+from django.http import Http404
+
 from performers.models import Performer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.viewsets import ModelViewSet
@@ -27,7 +29,9 @@ class FilmsDirectedViewForLists(ModelViewSet):
     def get_queryset(self):
         director = Performer.objects.all().filter(
             url_name=self.kwargs["performer_url_name"]
-        )[0]
+        ).first()
+        if not director:
+            raise Http404
         return Film.objects.all().filter(director=director)
 
 
@@ -37,7 +41,9 @@ class FilmsStarredInViewForLists(ModelViewSet):
     def get_queryset(self):
         actor = Performer.objects.all().filter(
             url_name=self.kwargs["performer_url_name"]
-        )[0]
+        ).first()
+        if not actor:
+            raise Http404
         return Film.objects.all().filter(cast=actor)
 
 
@@ -62,7 +68,9 @@ class FilmReviewViewForLists(ModelViewSet):
     serializer_class = FilmReviewSerializerForDisplayInLists
 
     def get_queryset(self):
-        film = Film.objects.all().filter(url_name=self.kwargs["film_url_name"])[0]
+        film = Film.objects.all().filter(url_name=self.kwargs["film_url_name"]).first()
+        if not film:
+            Http404
         return FilmReview.objects.all().filter(film_reviewed=film)
 
 

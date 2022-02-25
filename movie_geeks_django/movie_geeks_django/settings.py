@@ -36,6 +36,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    "debug_toolbar",
     "users.apps.UsersConfig",
     "awards.apps.AwardsConfig",
     "performers.apps.PerformersConfig",
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -141,3 +143,7 @@ db_from_env = dj_database_url.config(
 DATABASES["default"].update(db_from_env)
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
