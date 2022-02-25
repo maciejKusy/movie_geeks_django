@@ -1,8 +1,9 @@
 
 <h1> Movie Geeks API</h1>
-
+<hr>
 <h3>Short description:</h3>
 <p>A Django-powered REST API designed as a basis for an IMDB-like web service. Included is the dockerfile that can be used to create a docker image/container.</p></br>
+<hr>
 <h3>Built with</h3>
 <ul>
   <li>
@@ -35,14 +36,17 @@
 </ul>
   
 <p align="right">(<a href="#top">back to top</a>)</p>
+<hr>
   <h3>Prerequisites</h3>
   <p>All dependencies are provided in the form of a Pipfile. Please consult Pipenv documentation on how to use that to retrieve all relevant dependencies</p>
   
 <p align="right">(<a href="#top">back to top</a>)</p>
+<hr>
   <h3>License</h3>
   <p>Distributed under MIT license. Please see LICENSE.txt for details</h3>
   
 <p align="right">(<a href="#top">back to top</a>)</p>
+<hr>
   <h3>Contact</h3>
   <p>Email: <a href"mailto:mkusy936@gmail.com">mkusy936@gmail.com</a></p>
   <p>Project link: <a href="https://github.com/maciejKusy/movie_geeks_django">Movie Geeks API</a></p>
