@@ -1,6 +1,5 @@
 
 <h1> Movie Geeks API</h1>
-<hr>
 <h3>Short description:</h3>
 <p>A Django-powered REST API designed as a basis for an IMDB-like web service. Included is the dockerfile that can be used to create a docker image/container.</p></br>
 <hr>
@@ -41,6 +40,11 @@
   <p>All dependencies are provided in the form of a Pipfile. Please consult Pipenv documentation on how to use that to retrieve all relevant dependencies</p>
   
 <p align="right">(<a href="#top">back to top</a>)</p>
+<hr>
+  <h3>Heroku deployment</h3>
+  <p>The API is deployed to Heroku -> chech it our <a href="https://movie-geeks-django.herokuapp.com/" target="_blank">HERE</a>.</br>
+  The dockerfile is provided within the app directory so you can go ahead and use it to deploy the app as well and play with it.</br></p>  
+  <p align="right">(<a href="#top">back to top</a>)</p>
 <hr>
   <h3>License</h3>
   <p>Distributed under MIT license. Please see LICENSE.txt for details</h3>
